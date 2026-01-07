@@ -1,0 +1,13 @@
+{
+  "gems": [
+    {
+      "id": "mathematics-5",
+      "subject": "Mathematics",
+      "grade": "5",
+      "gemName": "Mathematics - Grade 5 Teacher",
+      "shareLink": "https://gemini.google.com/gem/test123",
+      "createdAt": "2026-01-06T10:50:11.667Z",
+      "updatedAt": "2026-01-06T10:50:11.667Z"
+    }
+  ]
+}
