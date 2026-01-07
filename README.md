@@ -31,21 +31,45 @@ TeacherAssist bridges the gap between abstract textbook definitions and the chil
 
 ## Pedagogical Alignment (NEP 2020)
 
-TeacherAssist is built on the **NEP 2020 5+3+3+4 framework**. The AI automatically adjusts its teaching DNA based on the student's developmental stage:
+TeacherAssist is deeply aligned with the **NEP 2020 5+3+3+4 framework**. The AI doesn't just simplify language; it changes its "instructional DNA" based on the student's pedagogical tier:
 
-- **Foundational (Grade 1-2)**: Discovery-based learning using household items and short 3-word sentences.
-- **Preparatory (Grade 3-5)**: Interactive learning with conceptual labels and local environment anchors.
-- **Middle (Grade 6-8)**: Introduction of abstract concepts with a focus on critical thinking and "the why."
-- **Secondary (Grade 9-10)**: Academic rigor, technical vocabulary, and global civic responsibility.
+### 🧱 Foundational Stage (Grades 1–2)
+- **Focus**: Play-based, activity-based, and discovery-based learning.
+- **DNA**: framed as **Discovery**. It avoids lecture-style explanations.
+- **Examples**: Uses household items (spoons, bottles) and family interactions (chores, games) to explain concepts. Language is kept to 3-5 word sentences.
+
+### 🧩 Preparatory Stage (Grades 3–5)
+- **Focus**: Transition from play to formal but highly interactive learning.
+- **DNA**: framed as **Conceptual Anchoring**. It introduces formal labels (e.g., "This is called a Life Cycle") but anchors them in market visits, school-bus rides, and local environment observations.
+- **Language**: Simple grammar, 5-8 word sentences, clear conceptual labels.
+
+### ⚙️ Middle Stage (Grades 6–8)
+- **Focus**: Subject-oriented pedagogical and curricular style.
+- **DNA**: framed as **Critical Thinking**. It introduces abstract concepts (Algebra, Human Systems) and forces the AI to show the *why* first. It supports NEP's vision of moving away from rote memorization.
+- **Language**: Compound sentences, standard terminology accompanied by immediate simplified explanations.
+
+### 🎓 Secondary Stage (Grades 9–10)
+- **Focus**: Greater depth, critical thinking, and preparation for rigorous study.
+- **DNA**: framed as **Academic Rigor**. It uses standard academic English and focuses on logical reasoning, global civic responsibility, and complex systems (Genetics, Periodic Table, Laws of Motion).
+
+---
 
 ## Board-Specific Intelligence
 
-Every prompt is uniquely "flavored" to match the curriculum and cultural lens of the selected board:
+Every prompt is uniquely "flavored" to match the curriculum standards and cultural lens of the selected board:
 
-- **Karnataka State**: Focuses on regional relevance, local districts, and state-prescribed textbooks.
-- **CBSE**: National standards and NCERT alignment with a focus on structured conceptual clarity.
-- **ICSE**: High linguistic standards and deep, application-based learning for a detailed syllabus.
-- **IGCSE**: Inquiry-led, global perspective using international examples and inquiry cycles.
+- **Karnataka State Board**: 
+  - *Lens*: **Regional Relevance**. 
+  - *Context*: Prioritizes local landmarks, festivals, regional crops (Ragi, Coconut), and state-prescribed textbook structures. It ensures students feel the curriculum belongs to their world.
+- **CBSE (Central Board)**: 
+  - *Lens*: **Structured Conceptual Clarity**. 
+  - *Context*: Aligns strictly with NCERT pedagogical flows. It ensures consistency across national standards and prepares students for competitive conceptual clarity.
+- **ICSE (Council for ISCE)**: 
+  - *Lens*: **Depth & Application**. 
+  - *Context*: Known for extensive syllabi, the prompt pushes the AI toward high detailed depth and linguistic proficiency. It asks for "real-world application" in every single conceptual explanation.
+- **IGCSE (International)**: 
+  - *Lens*: **Global Inquiry**. 
+  - *Context*: Uses international examples and pushes an "Inquiry Cycle" (Guess, Observe, Test, Conclude). It builds a global scientific mindset alongside local relatable examples.
 
 ## How it Works
 
