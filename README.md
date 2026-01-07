@@ -14,11 +14,18 @@ TeacherAssist bridges the gap between abstract textbook definitions and the chil
 
 - **Simplifying Explanations**: Converts complex topics into short, simple sentences and everyday analogies (e.g., using rice, chapati, or a school bus to explain science/math).
 - **Universal Grade-Level Gems**: One single tool per grade that can handle any subject (Math, Science, Social Studies) with subject-specific pedagogical "flavors."
-- **Interactive Commands**:
-    - `/101`: Generates a "first-time" simple explanation.
-    - `/activities`: Suggests low-cost, hands-on classroom games and physical movement.
-    - `/youtube`: Provides specific search strings for visual animations and demonstrations.
-    - `/quiz`: Creates context-aware, 10-question quizzes with an answer key.
+- **Interactive Commands**: Teachers can guide the AI using simple slash commands:
+    - `/101`: Very basic explanation for first-time learners.
+    - `/examples`: 3–5 extra examples from Indian daily life.
+    - `/activities`: Low-cost classroom games and physical movement.
+    - `/quiz`: Context-aware 8-10 question quizzes with answer keys.
+    - `/youtube`: Search strings for visual animations and demonstrations.
+    - `/step-by-step`: Breaks concepts into small steps across periods.
+    - `/practice`: Simple oral or written practice questions.
+    - `/story`: Relatable stories to explain complex ideas.
+    - `/classroom`: Blackboard-based explanation strategies.
+    - `/mistakes`: Common student misconceptions and how to correct them.
+    - `/help`: Displays all available commands.
 - **Safe Classroom Guardrails**: Strictly ensures no religious, political, or social bias, and maintains absolute age-appropriateness and inclusivity.
 - **One-Click Sharing**: Allows teachers to easily share Grade-level tools via WhatsApp for instant access.
 
