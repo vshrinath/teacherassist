@@ -29,6 +29,24 @@ TeacherAssist bridges the gap between abstract textbook definitions and the chil
 - **Safe Classroom Guardrails**: Strictly ensures no religious, political, or social bias, and maintains absolute age-appropriateness and inclusivity.
 - **One-Click Sharing**: Allows teachers to easily share Grade-level tools via WhatsApp for instant access.
 
+## Pedagogical Alignment (NEP 2020)
+
+TeacherAssist is built on the **NEP 2020 5+3+3+4 framework**. The AI automatically adjusts its teaching DNA based on the student's developmental stage:
+
+- **Foundational (Grade 1-2)**: Discovery-based learning using household items and short 3-word sentences.
+- **Preparatory (Grade 3-5)**: Interactive learning with conceptual labels and local environment anchors.
+- **Middle (Grade 6-8)**: Introduction of abstract concepts with a focus on critical thinking and "the why."
+- **Secondary (Grade 9-10)**: Academic rigor, technical vocabulary, and global civic responsibility.
+
+## Board-Specific Intelligence
+
+Every prompt is uniquely "flavored" to match the curriculum and cultural lens of the selected board:
+
+- **Karnataka State**: Focuses on regional relevance, local districts, and state-prescribed textbooks.
+- **CBSE**: National standards and NCERT alignment with a focus on structured conceptual clarity.
+- **ICSE**: High linguistic standards and deep, application-based learning for a detailed syllabus.
+- **IGCSE**: Inquiry-led, global perspective using international examples and inquiry cycles.
+
 ## How it Works
 
 1. **Admin Panel**: Administrators generate a "Universal Prompt" for a specific Grade and Board.
