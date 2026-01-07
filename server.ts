@@ -104,14 +104,27 @@ const getBoardContext = (board: string) => {
     }
 };
 
+const PREGENERATED_PROMPTS_COLLECTION = 'pregenerated_prompts';
+
 // Admin Routes
-app.post('/api/generate-prompt', authMiddleware, (req, res) => {
+app.post('/api/generate-prompt', authMiddleware, async (req, res) => {
     const { subject, grade, board } = req.body;
     if (!grade || !board) {
         return res.status(400).json({ error: 'Grade and board are required' });
     }
 
+    const id = `${board.toLowerCase().replace(/\s+/g, '-')}-${grade}`;
+
     try {
+        // Try to fetch pre-generated prompt first
+        const promptRef = db.collection(PREGENERATED_PROMPTS_COLLECTION).doc(id);
+        const doc = await promptRef.get();
+
+        if (doc.exists) {
+            return res.json({ prompt: doc.data()?.prompt });
+        }
+
+        // Fallback to on-the-fly generation
         let template = fs.readFileSync(TEMPLATE_FILE, 'utf8');
         const gradeContext = getGradeContext(grade, subject);
         const boardContext = getBoardContext(board);
@@ -124,6 +137,7 @@ app.post('/api/generate-prompt', authMiddleware, (req, res) => {
 
         res.json({ prompt: template });
     } catch (error) {
+        console.error('Prompt Generation Error:', error);
         res.status(500).json({ error: 'Failed to generate prompt' });
     }
 });

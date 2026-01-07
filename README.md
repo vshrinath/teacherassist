@@ -20,11 +20,10 @@ TeacherAssist bridges the gap between abstract textbook definitions and the chil
     - `/activities`: Low-cost classroom games and physical movement.
     - `/quiz`: Context-aware 8-10 question quizzes with answer keys.
     - `/youtube`: Search strings for visual animations and demonstrations.
-    - `/step-by-step`: Breaks concepts into small steps across periods.
-    - `/practice`: Simple oral or written practice questions.
-    - `/story`: Relatable stories to explain complex ideas.
-    - `/classroom`: Blackboard-based explanation strategies.
-    - `/mistakes`: Common student misconceptions and how to correct them.
+    - `/parent`: Creates a 3-line summary for a parent WhatsApp group to bridge the home-school gap.
+    - `/image-prompt`: Generates a descriptive prompt for AI image generators to create custom diagrams.
+    - `/draw`: Provides a step-by-step layout for the classroom blackboard.
+    - `/remedial`: Simplifies explanations for students who are behind, focusing on prerequisites.
     - `/help`: Displays all available commands.
 - **Safe Classroom Guardrails**: Strictly ensures no religious, political, or social bias, and maintains absolute age-appropriateness and inclusivity.
 - **One-Click Sharing**: Allows teachers to easily share Grade-level tools via WhatsApp for instant access.
