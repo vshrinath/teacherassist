@@ -6,6 +6,7 @@ import path from 'path';
 import { Firestore } from '@google-cloud/firestore';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { OAuth2Client } from 'google-auth-library';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -13,6 +14,8 @@ const __dirname = dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 const TEMPLATE_FILE = path.join(__dirname, 'templates', 'teaching-prompt.md');
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 // Initialize Firestore
 // In Cloud Run, it will automatically use the project's default credentials
@@ -22,6 +25,34 @@ const GEMS_COLLECTION = 'gems';
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
+
+// Authentication Middleware
+async function authMiddleware(req: express.Request, res: express.Response, next: express.NextFunction) {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        // For now, if no client ID is set, we'll allow requests to facilitate initial setup
+        // This should be tightened once a client ID is provided
+        if (!GOOGLE_CLIENT_ID) {
+            console.warn('WARNING: GOOGLE_CLIENT_ID not set. Authentication bypassed.');
+            return next();
+        }
+        return res.status(401).json({ error: 'Unauthorized: No token provided' });
+    }
+
+    const token = authHeader.split(' ')[1];
+    try {
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: GOOGLE_CLIENT_ID,
+        });
+        const payload = ticket.getPayload();
+        (req as any).user = payload;
+        next();
+    } catch (error) {
+        console.error('Auth Error:', error);
+        res.status(401).json({ error: 'Unauthorized: Invalid token' });
+    }
+}
 
 // Helper to get grade context based on NEP pedagogical tiers
 const getGradeContext = (grade: string, subject: string) => {
@@ -57,20 +88,39 @@ const getGradeContext = (grade: string, subject: string) => {
     }
 };
 
+// Helper to get board context
+const getBoardContext = (board: string) => {
+    switch (board) {
+        case 'CBSE':
+            return '### Board: CBSE\n- Align with NCERT curriculum and assessment patterns.\n- Focus on conceptual clarity and national standards.';
+        case 'ICSE':
+            return '### Board: ICSE\n- Focus on comprehensive and detailed explanations.\n- Emphasize application-based learning and English proficiency.';
+        case 'IGCSE':
+            return '### Board: IGCSE\n- Global perspective with inquiry-based learning.\n- Use international examples and practical applications.';
+        case 'Karnataka State':
+            return '### Board: Karnataka State Education Board\n- Align with state textbooks and local cultural context.\n- Use local examples and regional relevance.';
+        default:
+            return '';
+    }
+};
+
 // Admin Routes
-app.post('/api/generate-prompt', (req, res) => {
-    const { subject, grade } = req.body;
-    if (!subject || !grade) {
-        return res.status(400).json({ error: 'Subject and grade are required' });
+app.post('/api/generate-prompt', authMiddleware, (req, res) => {
+    const { subject, grade, board } = req.body;
+    if (!grade || !board) {
+        return res.status(400).json({ error: 'Grade and board are required' });
     }
 
     try {
         let template = fs.readFileSync(TEMPLATE_FILE, 'utf8');
         const gradeContext = getGradeContext(grade, subject);
+        const boardContext = getBoardContext(board);
 
-        template = template.replace(/{{SUBJECT}}/g, subject);
+        template = template.replace(/{{SUBJECT}}/g, subject || 'various subjects');
         template = template.replace(/{{GRADE}}/g, grade);
         template = template.replace(/{{GRADE_CONTEXT}}/g, gradeContext);
+        template = template.replace(/{{BOARD}}/g, board);
+        template = template.replace(/{{BOARD_CONTEXT}}/g, boardContext);
 
         res.json({ prompt: template });
     } catch (error) {
@@ -78,20 +128,22 @@ app.post('/api/generate-prompt', (req, res) => {
     }
 });
 
-app.post('/api/gems', async (req, res) => {
-    const { subject, grade, gemName, shareLink, promptText } = req.body;
-    if (!subject || !grade || !gemName) {
-        return res.status(400).json({ error: 'Subject, grade, and gemName are required' });
+app.post('/api/gems', authMiddleware, async (req, res) => {
+    const { subject, grade, board, gemName, shareLink, promptText, textbookUrl } = req.body;
+    if (!grade || !board || !gemName) {
+        return res.status(400).json({ error: 'Grade, board, and gemName are required' });
     }
 
-    const id = `${subject.toLowerCase().replace(/\s+/g, '-')}-${grade}`;
+    const id = `${board.toLowerCase().replace(/\s+/g, '-')}-${grade}`;
     const newGem = {
         id,
         subject,
         grade,
+        board,
         gemName,
         shareLink: shareLink || '',
         promptText: promptText || '',
+        textbookUrl: textbookUrl || '',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
     };
@@ -116,9 +168,30 @@ app.get('/api/gems', async (req, res) => {
     }
 });
 
-app.put('/api/gems/:id', async (req, res) => {
+app.get('/api/gems/check', authMiddleware, async (req, res) => {
+    const { board, grade } = req.query;
+    if (!board || !grade) {
+        return res.status(400).json({ error: 'Board and grade are required' });
+    }
+
+    const id = `${(board as string).toLowerCase().replace(/\s+/g, '-')}-${grade}`;
+
+    try {
+        const gemRef = db.collection(GEMS_COLLECTION).doc(id);
+        const doc = await gemRef.get();
+        if (doc.exists) {
+            res.json({ exists: true, data: doc.data() });
+        } else {
+            res.json({ exists: false });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Feedback failed' });
+    }
+});
+
+app.put('/api/gems/:id', authMiddleware, async (req, res) => {
     const { id } = req.params;
-    const { shareLink, gemName, promptText } = req.body;
+    const { shareLink, gemName, promptText, textbookUrl } = req.body;
 
     try {
         const gemRef = db.collection(GEMS_COLLECTION).doc(id);
@@ -134,6 +207,7 @@ app.put('/api/gems/:id', async (req, res) => {
         if (shareLink !== undefined) updateData.shareLink = shareLink;
         if (gemName !== undefined) updateData.gemName = gemName;
         if (promptText !== undefined) updateData.promptText = promptText;
+        if (textbookUrl !== undefined) updateData.textbookUrl = textbookUrl;
 
         await gemRef.update(updateData);
         const updatedDoc = await gemRef.get();
@@ -144,7 +218,7 @@ app.put('/api/gems/:id', async (req, res) => {
     }
 });
 
-app.delete('/api/gems/:id', async (req, res) => {
+app.delete('/api/gems/:id', authMiddleware, async (req, res) => {
     const { id } = req.params;
     try {
         await db.collection(GEMS_COLLECTION).doc(id).delete();
@@ -157,23 +231,21 @@ app.delete('/api/gems/:id', async (req, res) => {
 
 // Teacher Routes
 app.get('/api/gems/find', async (req, res) => {
-    const { subject, grade } = req.query;
-    if (!subject || !grade) {
-        return res.status(400).json({ error: 'Subject and grade are required' });
+    const { board, grade } = req.query;
+    if (!board || !grade) {
+        return res.status(400).json({ error: 'Board and grade are required' });
     }
 
     try {
-        const snapshot = await db.collection(GEMS_COLLECTION)
-            .where('subject', '==', subject)
-            .where('grade', '==', grade)
-            .limit(1)
+        const doc = await db.collection(GEMS_COLLECTION)
+            .doc(`${(board as string).toLowerCase().replace(/\s+/g, '-')}-${grade}`)
             .get();
 
-        if (snapshot.empty) {
+        if (!doc.exists) {
             return res.status(404).json({ error: 'Gem not found' });
         }
 
-        res.json(snapshot.docs[0].data());
+        res.json(doc.data());
     } catch (error) {
         console.error('Firestore Error:', error);
         res.status(500).json({ error: 'Failed to find Gem' });

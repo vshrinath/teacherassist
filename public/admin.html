@@ -4,10 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Tag Manager / Analytics Placeholders -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8QZ9X3249P"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-8QZ9X3249P');
+    </script>
+    <!-- End GTM/GA -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <title>GemTeach Admin - Prompt Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        .auth-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            backdrop-filter: blur(10px);
+        }
+
         body {
             font-family: 'Outfit', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -37,142 +59,164 @@
     </style>
 </head>
 
-<body class="p-4 md:p-8 text-white">
-    <div class="max-w-6xl mx-auto">
-        <header class="mb-8 flex justify-between items-center">
-            <div>
-                <h1 class="text-3xl font-bold">GemTeach Admin</h1>
+<body class="bg-[#0f172a] text-white min-h-screen">
+    <div id="authOverlay" class="auth-overlay">
+        <h1 class="text-3xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+            TeacherAssist Admin</h1>
+        <p class="text-gray-400 mb-8">Please sign in to manage Teaching Gems</p>
+        <div id="g_id_signin"></div>
+    </div>
+
+    <div id="adminContent" class="hidden">
+        <nav class="p-4 md:p-6 border-b border-white/10 glass sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="bg-purple-600 w-8 h-8 rounded-lg flex items-center justify-center font-bold">G</div>
+                    <span class="font-bold text-lg hidden md:block">GemTeach Admin</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span id="userEmail" class="text-xs text-gray-400"></span>
+                    <button onclick="logout()" class="text-xs hover:text-white transition-colors">Sign Out</button>
+                    <a href="/"
+                        class="text-xs bg-white/5 hover:bg-white/10 px-4 py-2 rounded-lg transition-all border border-white/10">Teacher
+                        Dashboard</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="max-w-6xl mx-auto p-4 md:p-8">
+            <header class="mb-8">
+                <h1 class="text-3xl font-bold">Gem Manager</h1>
                 <p class="text-purple-200">Generate teaching prompts and store Gem links</p>
-            </div>
-            <a href="/" class="px-4 py-2 glass rounded-lg hover:bg-white/20 transition-all">Teacher Dashboard</a>
-        </header>
+            </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Form Section -->
-            <div class="glass p-6 rounded-2xl">
-                <h2 class="text-xl font-semibold mb-6">Generate Prompt</h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Subject</label>
-                        <select id="subject"
-                            class="w-full bg-white/10 border border-white/20 rounded-lg p-2 md:p-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                            <option value="Mathematics" class="text-black">Mathematics</option>
-                            <option value="Science" class="text-black">Science</option>
-                            <option value="English" class="text-black">English</option>
-                            <option value="Social Studies" class="text-black">Social Studies</option>
-                            <option value="Hindi" class="text-black">Hindi</option>
-                            <option value="EVS" class="text-black">EVS</option>
-                        </select>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Form Section -->
+                <div class="glass p-6 rounded-2xl">
+                    <h2 class="text-xl font-semibold mb-6">Create New Gem</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Board</label>
+                            <select id="board"
+                                class="w-full bg-white/10 border border-white/20 rounded-lg p-2 md:p-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                <option value="Karnataka State" class="text-black">Karnataka State</option>
+                                <option value="CBSE" class="text-black">CBSE</option>
+                                <option value="ICSE" class="text-black">ICSE</option>
+                                <option value="IGCSE" class="text-black">IGCSE</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Grade</label>
+                            <select id="grade"
+                                class="w-full bg-white/10 border border-white/20 rounded-lg p-2 md:p-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                <option value="1" class="text-black">1</option>
+                                <option value="2" class="text-black">2</option>
+                                <option value="3" class="text-black">3</option>
+                                <option value="4" class="text-black">4</option>
+                                <option value="5" class="text-black">5</option>
+                                <option value="6" class="text-black">6</option>
+                                <option value="7" class="text-black">7</option>
+                                <option value="8" class="text-black">8</option>
+                                <option value="9" class="text-black">9</option>
+                                <option value="10" class="text-black">10</option>
+                            </select>
+                        </div>
+                        <div id="checkStatus" class="text-xs text-purple-300 italic hidden">Checking for existing Gem...
+                        </div>
+                        <button id="generateBtn"
+                            class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition-all shadow-lg">
+                            Generate Prompt
+                        </button>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Grade</label>
-                        <select id="grade"
-                            class="w-full bg-white/10 border border-white/20 rounded-lg p-2 md:p-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                            <option value="1" class="text-black">1</option>
-                            <option value="2" class="text-black">2</option>
-                            <option value="3" class="text-black">3</option>
-                            <option value="4" class="text-black">4</option>
-                            <option value="5" class="text-black">5</option>
-                            <option value="6" class="text-black">6</option>
-                            <option value="7" class="text-black">7</option>
-                            <option value="8" class="text-black">8</option>
-                            <option value="9" class="text-black">9</option>
-                            <option value="10" class="text-black">10</option>
-                        </select>
+
+                    <!-- Guide Section -->
+                    <div id="guideSection"
+                        class="hidden mt-8 glass p-6 rounded-2xl animate-in slide-in-from-bottom-4 duration-500">
+                        <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                            <span
+                                class="bg-purple-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">!</span>
+                            How to Create the Gem
+                        </h3>
+                        <ol class="space-y-4 text-sm text-purple-100">
+                            <li class="flex gap-3">
+                                <span class="font-bold text-purple-400">1.</span>
+                                <p>Open <a href="https://gemini.google.com/gems" target="_blank"
+                                        class="underline font-semibold hover:text-white">Gemini Gems</a>.</p>
+                            </li>
+                            <li class="flex gap-3">
+                                <span class="font-bold text-purple-400">2.</span>
+                                <p>Click <strong>"New Gem"</strong>.</p>
+                            </li>
+                            <li class="flex gap-3">
+                                <span class="font-bold text-purple-400">3.</span>
+                                <p>Paste the <strong>Recommended Name</strong> and <strong>Prompt</strong> below.</p>
+                            </li>
+                            <li class="flex gap-3">
+                                <span class="font-bold text-purple-400">4.</span>
+                                <p><strong>Knowledge Tip:</strong> Upload <strong>all</strong> textbooks (Math, Science,
+                                    etc.) for this Grade to the <strong>Knowledge</strong> section.</p>
+                            </li>
+                            <li class="flex gap-3">
+                                <span class="font-bold text-purple-400">5.</span>
+                                <p>Click <strong>"Create"</strong>, then <strong>"Share"</strong> and copy the link.</p>
+                            </li>
+                            <li class="flex gap-3">
+                                <span class="font-bold text-purple-400">6.</span>
+                                <p>Register the link here.</p>
+                            </li>
+                        </ol>
                     </div>
-                    <button id="generateBtn"
-                        class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition-all shadow-lg">
-                        Generate Prompt
-                    </button>
                 </div>
 
-                <!-- Guide Section (Relocated) -->
-                <div id="guideSection"
-                    class="hidden mt-8 glass p-6 rounded-2xl animate-in slide-in-from-bottom-4 duration-500">
-                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-                        <span
-                            class="bg-purple-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">!</span>
-                        How to Create the Gem
-                    </h3>
-                    <ol class="space-y-4 text-sm text-purple-100">
-                        <li class="flex gap-3">
-                            <span class="font-bold text-purple-400">1.</span>
-                            <p>Click <a href="https://gemini.google.com" target="_blank"
-                                    class="underline font-semibold hover:text-white">gemini.google.com</a> to open
-                                Gemini.</p>
-                        </li>
-                        <li class="flex gap-3">
-                            <span class="font-bold text-purple-400">2.</span>
-                            <p>Click <strong>"Explore Gems"</strong> → <strong>"New Gem"</strong>.</p>
-                        </li>
-                        <li class="flex gap-3">
-                            <span class="font-bold text-purple-400">3.</span>
-                            <p>Paste the <strong>Recommended Name</strong> and the <strong>Generated Prompt</strong>.
-                            </p>
-                        </li>
-                        <li class="flex gap-3">
-                            <span class="font-bold text-purple-400">4.</span>
-                            <p>Click <strong>"Create"</strong>, then <strong>"Share"</strong> → <strong>"Copy
-                                    link"</strong>.</p>
-                        </li>
-                        <li class="flex gap-3">
-                            <span class="font-bold text-purple-400">5.</span>
-                            <p>Return here, click <strong>"Register Gem Link"</strong> and paste the URL.</p>
-                        </li>
-                    </ol>
-                </div>
-            </div>
+                <!-- Result Section -->
+                <div class="lg:col-span-2 space-y-8">
+                    <div class="glass p-6 rounded-2xl flex flex-col h-full min-h-[500px]">
+                        <h2 class="text-xl font-semibold mb-6">Generated Prompt</h2>
 
-            <!-- Result Section -->
-            <div class="lg:col-span-2 space-y-8">
-                <div class="glass p-6 rounded-2xl flex flex-col h-full">
-                    <h2 class="text-xl font-semibold mb-6">Generated Prompt</h2>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-1 text-purple-200">Recommended Gem Name</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="recommendedName" readonly
+                                    class="flex-grow bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-sm focus:outline-none"
+                                    placeholder="Generate a prompt first...">
+                                <button id="copyNameBtn"
+                                    class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg text-sm font-semibold border border-white/20 transition-all">Copy</button>
+                            </div>
+                        </div>
 
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium mb-1 text-purple-200">Recommended Gem Name</label>
-                        <div class="flex gap-2">
-                            <input type="text" id="recommendedName" readonly
-                                class="flex-grow bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-sm focus:outline-none"
-                                placeholder="Generate a prompt first...">
-                            <button id="copyNameBtn"
-                                class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg text-sm font-semibold border border-white/20 transition-all">Copy</button>
+                        <textarea id="promptArea" readonly
+                            class="flex-grow w-full bg-white/5 border border-white/20 rounded-lg p-4 focus:outline-none scroll-custom mb-4 font-mono text-sm min-h-[300px]"
+                            placeholder="Your customized prompt will appear here..."></textarea>
+
+                        <div class="flex flex-wrap gap-4">
+                            <button id="copyPromptBtn"
+                                class="flex-1 bg-white/10 hover:bg-white/20 py-3 rounded-lg transition-all font-semibold border border-white/20">
+                                Copy Prompt
+                            </button>
+                            <button id="saveModalBtn"
+                                class="flex-1 bg-green-600 hover:bg-green-700 py-3 rounded-lg transition-all font-semibold shadow-lg">
+                                Register Gem Link
+                            </button>
                         </div>
                     </div>
-
-                    <textarea id="promptArea" readonly
-                        class="flex-grow w-full bg-white/5 border border-white/20 rounded-lg p-4 focus:outline-none scroll-custom mb-4 font-mono text-sm min-h-[400px]"
-                        placeholder="Your customized prompt will appear here..."></textarea>
-
-                    <div class="flex flex-wrap gap-4">
-                        <button id="copyPromptBtn"
-                            class="flex-1 bg-white/10 hover:bg-white/20 py-3 rounded-lg transition-all font-semibold border border-white/20">
-                            Copy Prompt
-                        </button>
-                        <button id="saveModalBtn"
-                            class="flex-1 bg-green-600 hover:bg-green-700 py-3 rounded-lg transition-all font-semibold shadow-lg">
-                            Register Gem Link
-                        </button>
-                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Directory Section -->
-        <div class="mt-12 glass p-6 rounded-2xl overflow-hidden">
-            <h2 class="text-xl font-semibold mb-6">Saved Gems Directory</h2>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead class="bg-white/10">
-                        <tr>
-                            <th class="p-4 border-b border-white/10">Gem Name</th>
-                            <th class="p-4 border-b border-white/10">Link Status</th>
-                            <th class="p-4 border-b border-white/10 text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="gemsTable">
-                        <!-- Gems will be populated here -->
-                    </tbody>
-                </table>
+            <!-- Directory Section -->
+            <div class="mt-12 glass p-6 rounded-2xl overflow-hidden">
+                <h2 class="text-xl font-semibold mb-6">Saved Gems Directory</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-white/10">
+                            <tr>
+                                <th class="p-4 border-b border-white/10">Gem Name</th>
+                                <th class="p-4 border-b border-white/10">Status</th>
+                                <th class="p-4 border-b border-white/10 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gemsTable"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -180,7 +224,7 @@
     <!-- Save Modal -->
     <div id="saveModal"
         class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-        <div class="glass p-8 rounded-2xl max-w-md w-full animate-in fade-in zoom-in duration-300">
+        <div class="glass p-8 rounded-2xl max-w-md w-full animate-in fade-in zoom-in duration-300 text-white">
             <h3 class="text-2xl font-bold mb-6">Save Gem Link</h3>
             <div class="space-y-4">
                 <div>
@@ -191,6 +235,11 @@
                 <div>
                     <label class="block text-sm font-medium mb-1">Gem Share Link</label>
                     <input type="url" id="modalShareLink" placeholder="https://gemini.google.com/gem/..."
+                        class="w-full bg-white/10 border border-white/20 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Textbook/Reference PDF Link (Optional)</label>
+                    <input type="url" id="modalTextbookUrl" placeholder="https://..."
                         class="w-full bg-white/10 border border-white/20 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
                 <div class="flex gap-4 mt-8">
@@ -205,9 +254,10 @@
     </div>
 
     <script>
-        const subjectEl = document.getElementById('subject');
+        const boardEl = document.getElementById('board');
         const gradeEl = document.getElementById('grade');
         const generateBtn = document.getElementById('generateBtn');
+        const checkStatus = document.getElementById('checkStatus');
         const promptArea = document.getElementById('promptArea');
         const recommendedName = document.getElementById('recommendedName');
         const copyNameBtn = document.getElementById('copyNameBtn');
@@ -217,20 +267,59 @@
         const saveModal = document.getElementById('saveModal');
         const modalGemName = document.getElementById('modalGemName');
         const modalShareLink = document.getElementById('modalShareLink');
+        const modalTextbookUrl = document.getElementById('modalTextbookUrl');
         const saveGemBtn = document.getElementById('saveGemBtn');
         const cancelModal = document.getElementById('cancelModal');
         const gemsTable = document.getElementById('gemsTable');
 
         let currentGemId = null;
+        let isEditMode = false;
+
+        async function checkForExistingGem() {
+            const board = boardEl.value;
+            const grade = gradeEl.value;
+
+            checkStatus.classList.remove('hidden');
+            try {
+                const token = localStorage.getItem('gemteach_admin_token');
+                const res = await fetch(`/api/gems/check?board=${encodeURIComponent(board)}&grade=${grade}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.status === 401) return logout();
+                const result = await res.json();
+
+                if (result.exists) {
+                    generateBtn.textContent = 'Load Existing Gem';
+                    generateBtn.classList.replace('bg-purple-600', 'bg-blue-600');
+                    generateBtn.classList.replace('hover:bg-purple-700', 'hover:bg-blue-700');
+                    isEditMode = true;
+                    return result.data;
+                } else {
+                    generateBtn.textContent = 'Generate Prompt';
+                    generateBtn.classList.replace('bg-blue-600', 'bg-purple-600');
+                    generateBtn.classList.replace('hover:bg-blue-700', 'hover:bg-purple-700');
+                    isEditMode = false;
+                    return null;
+                }
+            } finally {
+                checkStatus.classList.add('hidden');
+            }
+        }
+
+        [boardEl, gradeEl].forEach(el => el.addEventListener('change', checkForExistingGem));
 
         async function fetchGems() {
-            const res = await fetch('/api/gems');
+            const token = localStorage.getItem('gemteach_admin_token');
+            const res = await fetch('/api/gems', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.status === 401) return logout();
             const gems = await res.json();
             gemsTable.innerHTML = gems.map(gem => `
                 <tr class="hover:bg-white/5 transition-colors">
                     <td class="p-4 border-b border-white/10">
                         <div class="font-semibold text-white">${gem.gemName}</div>
-                        <div class="text-xs text-purple-300">${gem.subject} • Grade ${gem.grade}</div>
+                        <div class="text-xs text-purple-300">${gem.board} • Grade ${gem.grade} (Universal)</div>
                     </td>
                     <td class="p-4 border-b border-white/10">
                         ${gem.shareLink ?
@@ -240,7 +329,7 @@
                     </td>
                     <td class="p-4 border-b border-white/10 text-center space-x-2">
                         ${gem.shareLink ? `<button onclick="window.open('${gem.shareLink}', '_blank')" class="px-3 py-1 bg-blue-600/50 hover:bg-blue-600 rounded text-xs transition-all text-white">Verify</button>` : ''}
-                        <button onclick="editGem('${gem.id}', '${gem.gemName}', '${gem.shareLink}')" class="px-3 py-1 bg-white/10 hover:bg-white/20 rounded text-xs border border-white/10 transition-all text-white">Edit</button>
+                        <button onclick="editGem('${gem.id}', '${gem.gemName}', '${gem.shareLink}', '${gem.promptText || ''}', '${gem.textbookUrl || ''}')" class="px-3 py-1 bg-white/10 hover:bg-white/20 rounded text-xs border border-white/10 transition-all text-white">Edit</button>
                         <button onclick="deleteGem('${gem.id}')" class="px-3 py-1 bg-red-600/30 hover:bg-red-600/50 rounded text-xs border border-red-500/20 transition-all text-white">Delete</button>
                     </td>
                 </tr>
@@ -248,17 +337,36 @@
         }
 
         generateBtn.onclick = async () => {
+            if (isEditMode) {
+                const gem = await checkForExistingGem();
+                if (gem) {
+                    currentGemId = gem.id;
+                    promptArea.value = gem.promptText;
+                    recommendedName.value = gem.gemName;
+                    modalGemName.value = gem.gemName;
+                    modalShareLink.value = gem.shareLink;
+                    modalTextbookUrl.value = gem.textbookUrl || '';
+                    guideSection.classList.remove('hidden');
+                }
+                return;
+            }
+
             generateBtn.disabled = true;
             generateBtn.textContent = 'Generating...';
             try {
+                const token = localStorage.getItem('gemteach_admin_token');
                 const res = await fetch('/api/generate-prompt', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ subject: subjectEl.value, grade: gradeEl.value })
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ board: boardEl.value, grade: gradeEl.value })
                 });
+                if (res.status === 401) return logout();
                 const data = await res.json();
                 promptArea.value = data.prompt;
-                recommendedName.value = `${subjectEl.value} - Grade ${gradeEl.value} Teacher`;
+                recommendedName.value = `TeacherAssist Grade ${gradeEl.value} (${boardEl.value})`;
                 modalGemName.value = recommendedName.value;
                 guideSection.classList.remove('hidden');
             } finally {
@@ -293,42 +401,103 @@
 
         saveGemBtn.onclick = async () => {
             const payload = {
-                subject: subjectEl.value,
                 grade: gradeEl.value,
+                board: boardEl.value,
                 gemName: modalGemName.value,
                 shareLink: modalShareLink.value,
-                promptText: promptArea.value
+                promptText: promptArea.value,
+                textbookUrl: modalTextbookUrl.value
             };
 
             const url = currentGemId ? `/api/gems/${currentGemId}` : '/api/gems';
             const method = currentGemId ? 'PUT' : 'POST';
 
-            await fetch(url, {
+            const token = localStorage.getItem('gemteach_admin_token');
+            const res = await fetch(url, {
                 method,
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify(payload)
             });
 
+            if (res.status === 401) return logout();
+
             saveModal.classList.add('hidden');
             modalShareLink.value = '';
+            modalTextbookUrl.value = '';
             fetchGems();
+            checkForExistingGem();
         };
 
         window.deleteGem = async (id) => {
             if (confirm('Are you sure you want to delete this Gem?')) {
-                await fetch(`/api/gems/${id}`, { method: 'DELETE' });
+                const token = localStorage.getItem('gemteach_admin_token');
+                const res = await fetch(`/api/gems/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.status === 401) return logout();
                 fetchGems();
+                checkForExistingGem();
             }
         };
 
-        window.editGem = (id, name, link) => {
+        window.editGem = (id, name, link, prompt, textbook) => {
             currentGemId = id;
             modalGemName.value = name;
             modalShareLink.value = link;
+            modalTextbookUrl.value = textbook || '';
+            promptArea.value = prompt || '';
             saveModal.classList.remove('hidden');
         };
 
-        fetchGems();
+        window.onload = function () {
+            google.accounts.id.initialize({
+                client_id: "56316281362-2oq2mbap3q4nu9mrkk1s8dsc3j862h2k.apps.googleusercontent.com",
+                callback: handleCredentialResponse
+            });
+            google.accounts.id.renderButton(
+                document.getElementById("g_id_signin"),
+                { theme: "outline", size: "large", text: "signin_with", shape: "pill" }
+            );
+
+            const savedEmail = localStorage.getItem('gemteach_admin_user');
+            if (savedEmail) {
+                showAdmin(savedEmail);
+            }
+        }
+
+        function handleCredentialResponse(response) {
+            const responsePayload = parseJwt(response.credential);
+            localStorage.setItem('gemteach_admin_user', responsePayload.email);
+            localStorage.setItem('gemteach_admin_token', response.credential);
+            showAdmin(responsePayload.email);
+        }
+
+        function parseJwt(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        };
+
+        function showAdmin(email) {
+            document.getElementById('authOverlay').classList.add('hidden');
+            document.getElementById('adminContent').classList.remove('hidden');
+            document.getElementById('userEmail').textContent = email;
+            checkForExistingGem();
+            fetchGems();
+        }
+
+        window.logout = function () {
+            localStorage.removeItem('gemteach_admin_user');
+            localStorage.removeItem('gemteach_admin_token');
+            window.location.reload();
+        }
     </script>
 </body>
 
