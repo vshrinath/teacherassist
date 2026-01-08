@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disclaimer - TeacherAssist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@700&family=Outfit:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-teal: #0D9488;
+            --warm-cream: #FCFAF7;
+            --amber-accent: #D97706;
+            --text-slate: #1E293B;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--warm-cream);
+            color: var(--text-slate);
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Frank Ruhl Libre', serif;
+        }
+
+        .sketch-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.05;
+            z-index: -1;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen py-16 px-4">
+    <!-- Subtle Sketch Background -->
+    <div class="sketch-bg">
+        <svg width="100%" height="100%" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100,100 L150,120 M120,80 L80,140 M400,300 Q450,250 500,300 T600,300" stroke="#0D9488"
+                stroke-width="2" fill="none" />
+            <rect x="700" y="100" width="60" height="80" rx="4" stroke="#0D9488" stroke-width="2" fill="none"
+                transform="rotate(15, 730, 140)" />
+            <path d="M720,120 L740,120 M720,140 L740,140 M720,160 L730,160" stroke="#0D9488" stroke-width="1" />
+            <circle cx="200" cy="700" r="30" stroke="#0D9488" stroke-width="2" fill="none" />
+            <path d="M200,670 L200,650 M200,730 L200,750 M170,700 L150,700 M230,700 L250,700" stroke="#0D9488"
+                stroke-width="2" />
+        </svg>
+    </div>
+
+    <div class="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-teal-100">
+        <header class="mb-12 border-b border-teal-50 pb-8">
+            <h1 class="text-4xl font-bold text-teal-900 mb-4">Terms of Use & Disclaimer</h1>
+            <p class="text-teal-700 italic">Please read carefully before using TeacherAssist Gems.</p>
+        </header>
+
+        <div class="prose prose-teal max-w-none space-y-8">
+            <section>
+                <h2 class="text-2xl font-bold text-teal-800 mb-3">1. The Nature of AI & Prompt Engineering</h2>
+                <p class="leading-relaxed">TeacherAssist utilizes "System Prompt Engineering" to guide Google's Gemini
+                    models. While these models are highly capable, AI is an emerging and non-deterministic technology.
+                    It does not pull from a fixed database; it generates responses based on complex patterns.
+                    Consequently, results may vary and are not guaranteed to be 100% accurate regarding factual data,
+                    calculations, or pedagogical theory.</p>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-bold text-teal-800 mb-3">2. Safety & Guardrails</h2>
+                <p class="leading-relaxed">We have implemented multi-layered safety guardrails specifically designed for
+                    the Indian classroom context (including zero-bias protocols for religion, politics, and social
+                    hierarchies). However, no AI system can guarantee the absolute absence of unforeseen elements,
+                    unintended biases, or inappropriate content.</p>
+            </section>
+
+            <section class="bg-amber-50 p-6 rounded-2xl border border-amber-100">
+                <h2 class="text-2xl font-bold text-amber-900 mb-3">3. Professional Responsibility (Human-in-the-Loop)
+                </h2>
+                <p class="font-semibold text-amber-900 mb-4 tracking-wide uppercase text-sm">TeacherAssist is a
+                    supplement, not a substitute.</p>
+                <p class="leading-relaxed text-amber-800">The final authority in the classroom is the Teacher. It is
+                    your professional responsibility to:</p>
+                <ul class="list-disc list-inside mt-4 space-y-2 text-amber-800">
+                    <li><strong>Review and Verify:</strong> Always double-check AI-generated facts, names, and
+                        activities before presenting them to students.</li>
+                    <li><strong>Contextualize:</strong> Adjust the AI's suggestions to fit the specific emotional and
+                        academic needs of your unique classroom environment.</li>
+                    <li><strong>Safety Check:</strong> Ensure all suggested physical activities or materials are safe
+                        for your students.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-bold text-teal-800 mb-3">4. Limitation of Liability</h2>
+                <p class="leading-relaxed">The creators and contributors of TeacherAssist take no responsibility for the
+                    accuracy or consequences of the AI-generated outputs. Use of this tool is at the teacher's own risk.
+                    We are not liable for any errors, omissions, or any actions taken based on information provided by
+                    the Gems.</p>
+            </section>
+        </div>
+
+        <footer class="mt-12 pt-8 border-t border-teal-50">
+            <a href="/"
+                class="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 font-bold transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Dashboard
+            </a>
+        </footer>
+    </div>
+</body>
+
+</html>
