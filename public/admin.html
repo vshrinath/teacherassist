@@ -274,6 +274,7 @@
 
         let currentGemId = null;
         let isEditMode = false;
+        let allGemsAdmin = [];
 
         async function checkForExistingGem() {
             const board = boardEl.value;
@@ -314,8 +315,8 @@
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (res.status === 401) return logout();
-            const gems = await res.json();
-            gemsTable.innerHTML = gems.map(gem => `
+            allGemsAdmin = await res.json();
+            gemsTable.innerHTML = allGemsAdmin.map(gem => `
                 <tr class="hover:bg-white/5 transition-colors">
                     <td class="p-4 border-b border-white/10">
                         <div class="font-semibold text-white">${gem.gemName}</div>
@@ -329,7 +330,7 @@
                     </td>
                     <td class="p-4 border-b border-white/10 text-center space-x-2">
                         ${gem.shareLink ? `<button onclick="window.open('${gem.shareLink}', '_blank')" class="px-3 py-1 bg-blue-600/50 hover:bg-blue-600 rounded text-xs transition-all text-white">Verify</button>` : ''}
-                        <button onclick="editGem('${gem.id}', '${gem.gemName}', '${gem.shareLink}', '${gem.promptText || ''}', '${gem.textbookUrl || ''}')" class="px-3 py-1 bg-white/10 hover:bg-white/20 rounded text-xs border border-white/10 transition-all text-white">Edit</button>
+                        <button onclick="editGem('${gem.id}')" class="px-3 py-1 bg-white/10 hover:bg-white/20 rounded text-xs border border-white/10 transition-all text-white">Edit</button>
                         <button onclick="deleteGem('${gem.id}')" class="px-3 py-1 bg-red-600/30 hover:bg-red-600/50 rounded text-xs border border-red-500/20 transition-all text-white">Delete</button>
                     </td>
                 </tr>
@@ -449,12 +450,14 @@
             }
         };
 
-        window.editGem = (id, name, link, prompt, textbook) => {
+        window.editGem = (id) => {
+            const gem = allGemsAdmin.find(g => g.id === id);
+            if (!gem) return;
             currentGemId = id;
-            modalGemName.value = name;
-            modalShareLink.value = link;
-            modalTextbookUrl.value = textbook || '';
-            promptArea.value = prompt || '';
+            modalGemName.value = gem.gemName;
+            modalShareLink.value = gem.shareLink;
+            modalTextbookUrl.value = gem.textbookUrl || '';
+            promptArea.value = gem.promptText || '';
             saveModal.classList.remove('hidden');
         };
 
