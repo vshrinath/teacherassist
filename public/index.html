@@ -122,9 +122,15 @@
         let allGems = [];
 
         async function init() {
-            const res = await fetch('/api/gems');
-            allGems = await res.json();
-            populateGrid();
+            try {
+                const res = await fetch('/api/gems');
+                if (!res.ok) throw new Error('Failed to fetch gems');
+                allGems = await res.json();
+                populateGrid();
+            } catch (err) {
+                console.error(err);
+                gemsGrid.innerHTML = '<p class="col-span-full text-center text-red-500 py-12 bg-red-50 rounded-xl">Error loading Gems. Please try again later.</p>';
+            }
         }
 
         [boardEl, gradeEl].forEach(el => el.onchange = () => {

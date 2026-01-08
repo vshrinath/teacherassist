@@ -18,8 +18,9 @@ const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 // Initialize Firestore
-// In Cloud Run, it will automatically use the project's default credentials
-const db = new Firestore();
+const db = new Firestore({
+    ignoreUndefinedProperties: true
+});
 const GEMS_COLLECTION = 'gems';
 
 app.use(cors());

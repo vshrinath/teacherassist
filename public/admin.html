@@ -125,7 +125,7 @@
                         </div>
                         <button id="generateBtn"
                             class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition-all shadow-lg">
-                            Generate Prompt
+                            Get Teaching Prompt
                         </button>
                     </div>
 
@@ -171,14 +171,14 @@
                 <!-- Result Section -->
                 <div class="lg:col-span-2 space-y-8">
                     <div class="glass p-6 rounded-2xl flex flex-col h-full min-h-[500px]">
-                        <h2 class="text-xl font-semibold mb-6">Generated Prompt</h2>
+                        <h2 class="text-xl font-semibold mb-6">Teaching Prompt</h2>
 
                         <div class="mb-4">
                             <label class="block text-sm font-medium mb-1 text-purple-200">Recommended Gem Name</label>
                             <div class="flex gap-2">
                                 <input type="text" id="recommendedName" readonly
                                     class="flex-grow bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-sm focus:outline-none"
-                                    placeholder="Generate a prompt first...">
+                                    placeholder="Get a prompt first...">
                                 <button id="copyNameBtn"
                                     class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg text-sm font-semibold border border-white/20 transition-all">Copy</button>
                             </div>
@@ -295,7 +295,7 @@
                     isEditMode = true;
                     return result.data;
                 } else {
-                    generateBtn.textContent = 'Generate Prompt';
+                    generateBtn.textContent = 'Get Teaching Prompt';
                     generateBtn.classList.replace('bg-blue-600', 'bg-purple-600');
                     generateBtn.classList.replace('hover:bg-blue-700', 'hover:bg-purple-700');
                     isEditMode = false;
@@ -371,7 +371,7 @@
                 guideSection.classList.remove('hidden');
             } finally {
                 generateBtn.disabled = false;
-                generateBtn.textContent = 'Generate Prompt';
+                generateBtn.textContent = 'Get Teaching Prompt';
             }
         };
 
@@ -423,6 +423,11 @@
             });
 
             if (res.status === 401) return logout();
+            if (!res.ok) {
+                const error = await res.json();
+                alert('Error saving Gem: ' + (error.error || 'Unknown error'));
+                return;
+            }
 
             saveModal.classList.add('hidden');
             modalShareLink.value = '';
