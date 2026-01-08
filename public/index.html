@@ -33,7 +33,15 @@
     <div class="hero-gradient text-white py-16 px-4">
         <div class="max-w-4xl mx-auto text-center">
             <h1 class="text-4xl md:text-5xl font-bold mb-4">TeacherAssist</h1>
-            <p class="text-lg text-indigo-100">Simple, visual explanations for every child in the room.</p>
+            <p class="text-lg text-indigo-100 mb-8">Simple, visual explanations for every child in the room.</p>
+            <a href="/faq.html"
+                class="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-8 py-3 rounded-full font-bold transition-all border border-white/40 shadow-lg">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                How to Use This
+            </a>
         </div>
     </div>
 
@@ -109,7 +117,8 @@
         </div>
 
         <footer class="mt-20 text-center text-gray-400 text-sm">
-            <p>© 2026 TeacherAssist • <a href="/admin" class="hover:text-indigo-500 underline">Admin Access</a></p>
+            <p>© 2026 TeacherAssist • <a href="/faq.html" class="hover:text-indigo-500 underline">Guide & FAQ</a> • <a
+                    href="/admin" class="hover:text-indigo-500 underline">Admin Access</a></p>
         </footer>
     </div>
 
@@ -172,7 +181,7 @@
                     </div>
                     
                     <h3 class="text-xl font-bold text-gray-800 mb-2 group-hover:text-indigo-600 transition-colors">${gem.gemName}</h3>
-                    <p class="text-gray-500 text-sm mb-6 flex-grow">Universal Teaching Engine for Math, Science, Social Studies, and more.</p>
+                    <p class="text-gray-500 text-sm mb-6 flex-grow text-left">Enter your lesson name to start. Type <strong>/help</strong> inside the Gem to see all shortcuts for quizzes, worksheets, home activities, and visual teaching aids.</p>
                     <div class="space-y-2">
                         <button 
                             ${hasLink ? `onclick="window.open('${gem.shareLink}', '_blank')"` : 'disabled'}
