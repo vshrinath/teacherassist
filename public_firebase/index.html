@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Tag Manager / Analytics Placeholders -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8QZ9X3249P"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-8QZ9X3249P');
+    </script>
+    <!-- End GTM/GA -->
+    <title>TeacherAssist - Simplified Teaching Gems</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@700&family=Outfit:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-teal: #0D9488;
+            --warm-cream: #FCFAF7;
+            --amber-accent: #D97706;
+            --text-slate: #1E293B;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--warm-cream);
+            color: var(--text-slate);
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Frank Ruhl Libre', serif;
+        }
+
+        .hero-bg {
+            background: linear-gradient(135deg, #0D9488 0%, #065F46 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sketch-element {
+            position: absolute;
+            opacity: 0.1;
+            pointer-events: none;
+            color: white;
+        }
+
+        .gem-card {
+            background: #ffffff;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #E2E8F0;
+        }
+
+        .gem-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -8px rgba(13, 148, 136, 0.15);
+            border-color: var(--primary-teal);
+        }
+
+        .amber-btn {
+            background-color: var(--amber-accent);
+            transition: all 0.2s;
+        }
+
+        .amber-btn:hover {
+            background-color: #B45309;
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+    <!-- Hero Section -->
+    <div class="hero-bg text-white py-20 px-4 relative">
+        <!-- Classroom Sketch Elements -->
+        <svg class="sketch-element top-10 left-10 w-32 h-32" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+            <path d="M20,80 L80,80 M30,80 L30,40 L70,40 L70,80 M40,40 L40,20 L60,20 L60,40" stroke-width="2" />
+            <path d="M45,30 L55,30" stroke-width="1" />
+        </svg>
+        <svg class="sketch-element bottom-10 right-10 w-40 h-40" viewBox="0 0 100 100" fill="none"
+            stroke="currentColor">
+            <circle cx="50" cy="50" r="30" stroke-width="2" />
+            <path d="M50,20 L50,10 M80,50 L90,50 M50,80 L50,90 M20,50 L10,50" stroke-width="2" />
+            <path d="M50,35 L50,50 L65,50" stroke-width="2" />
+        </svg>
+        <svg class="sketch-element top-1/2 left-5 w-24 h-24" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+            <path d="M30,20 L70,20 L80,50 L20,50 Z" stroke-width="2" />
+            <path d="M30,50 L30,80 M70,50 L70,80" stroke-width="2" />
+        </svg>
+
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight">TeacherAssist</h1>
+            <p class="text-xl text-teal-50 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
+                Your personalized teaching assistant for lesson planning, visual aids, and NEP-aligned classroom magic.
+            </p>
+
+            <!-- Explainer Video -->
+            <div
+                class="max-w-3xl mx-auto mb-12 overflow-hidden rounded-[2rem] shadow-2xl border-8 border-white/10 ring-1 ring-white/20">
+                <div class="aspect-video">
+                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/28wQ7nLY0R4"
+                        title="TeacherAssist Explainer" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+
+            <a href="/faq.html"
+                class="inline-flex items-center gap-3 bg-white text-teal-900 px-10 py-4 rounded-full font-bold transition-all hover:bg-teal-50 shadow-xl group">
+                <svg class="w-6 h-6 text-teal-600 transition-transform group-hover:scale-110" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Learn How to Use This
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-20">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+            <div>
+                <h2 class="text-3xl font-bold text-teal-800 mb-2 italic">Select Your Grade</h2>
+                <p class="text-teal-600">Open your specialized Gem to start planning.</p>
+            </div>
+            <div
+                class="flex items-center gap-2 text-sm text-teal-700 font-semibold bg-teal-50 px-4 py-2 rounded-full border border-teal-100">
+                <span class="w-2 h-2 bg-teal-500 rounded-full animate-pulse"></span>
+                All Gems are NEP-2020 Compliant
+            </div>
+        </div>
+
+        <div id="gemGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Loading State -->
+            <div class="col-span-full py-20 text-center">
+                <div
+                    class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-teal-500 border-t-transparent">
+                </div>
+                <p class="mt-4 text-teal-600 font-medium">Loading your classroom tools...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-teal-100 py-16 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 mb-8">
+                <a href="/faq.html"
+                    class="text-teal-700 hover:text-teal-900 font-semibold underline underline-offset-4 decoration-teal-200">Guide
+                    & FAQ</a>
+                <span class="hidden md:inline w-1 h-1 bg-teal-200 rounded-full"></span>
+                <a href="/disclaimer.html"
+                    class="text-teal-700 hover:text-teal-900 font-semibold underline underline-offset-4 decoration-teal-200">Safety
+                    Disclaimer</a>
+                <span class="hidden md:inline w-1 h-1 bg-teal-200 rounded-full"></span>
+                <a href="/admin"
+                    class="text-teal-700 hover:text-teal-900 font-semibold underline underline-offset-4 decoration-teal-200">Admin
+                    Access</a>
+            </div>
+            <div class="space-y-3">
+                <p class="text-teal-800 font-medium">Created by <a href="https://www.linkedin.com/in/shrinathv"
+                        target="_blank"
+                        class="text-teal-600 hover:text-teal-800 underline decoration-teal-200 font-bold transition-all">Shrinath
+                        V</a></p>
+                <div class="flex items-center justify-center gap-2 text-teal-500 text-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                    <span>Empowering teachers with trustable AI assistants.</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        async function loadGems() {
+            const grid = document.getElementById('gemGrid');
+            try {
+                const res = await fetch('/api/gems');
+                const gems = await res.json();
+
+                if (gems.length === 0) {
+                    grid.innerHTML = `
+                        <div class="col-span-full p-12 text-center bg-white rounded-3xl border-2 border-dashed border-teal-100">
+                            <h3 class="text-xl font-bold text-teal-900 mb-2">No Teaching Gems Found</h3>
+                            <p class="text-teal-600">Administrator has not registered any Gems yet.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                grid.innerHTML = gems.map(gem => `
+                    <div class="gem-card p-8 rounded-[2rem] flex flex-col h-full group">
+                        <div class="flex items-start justify-between mb-6">
+                            <div class="bg-teal-50 p-4 rounded-2xl border border-teal-100 group-hover:bg-teal-100 transition-colors">
+                                <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                            </div>
+                            <span class="text-xs font-bold uppercase tracking-widest text-teal-500 bg-teal-50 px-3 py-1 rounded-full border border-teal-100">
+                                Grade ${gem.grade}
+                            </span>
+                        </div>
+                        
+                        <h3 class="text-2xl font-bold text-teal-900 mb-3">${gem.gemName}</h3>
+                        <p class="text-teal-700 text-sm mb-8 leading-relaxed flex-grow">
+                            Specialized assistant for ${gem.board} Grade ${gem.grade} concepts, lesson plans, and classroom stories.
+                        </p>
+                        
+                        <a href="${gem.shareLink}" target="_blank" 
+                           class="amber-btn inline-flex items-center justify-center gap-2 text-white font-bold py-4 rounded-2xl shadow-lg shadow-amber-900/10 transition-all">
+                            Open Your Gem
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                        </a>
+                    </div>
+                `).join('');
+            } catch (err) {
+                grid.innerHTML = '<p class="col-span-full text-center text-red-500 p-12 bg-red-50 rounded-2xl border border-red-100">Failed to load Gems. Please try again later.</p>';
+            }
+        }
+        loadGems();
+    </script>
+</body>
+
+</html>
