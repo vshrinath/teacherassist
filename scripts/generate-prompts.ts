@@ -13,7 +13,7 @@ const db = new Firestore();
 const PROMPTS_COLLECTION = 'pregenerated_prompts';
 
 const BOARDS = ['Karnataka State', 'CBSE', 'ICSE', 'IGCSE'];
-const GRADES = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+const GRADES = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
 
 const getGradeContext = (grade: string) => {
     const gradeNum = parseInt(grade);
@@ -38,13 +38,20 @@ const getGradeContext = (grade: string) => {
 - Complexity: Intermediate English, compound sentences, standard terminology with explanations.
 - Math focus: Algebra, properties of shapes, basic statistics.
 - Science focus: Human systems, chemical changes, force and pressure.`;
-    } else {
+    } else if (gradeNum <= 10) {
         return `### Tier: Secondary (Grade 9-10)
-- Focus: Greater depth, critical thinking, and preparation for rigorous study.
-- Examples: Global issues, career paths, complex systems, and civic responsibility.
-- Complexity: Standard academic English, technical vocabulary, logical reasoning.
-- Math focus: Trigonometry, quadratic equations, theorems.
-- Science focus: Genetics, periodic table, laws of motion.`;
+- Focus: Critical thinking, analytical reasoning, and examination readiness.
+- Examples: National and global issues, career paths, and technical systems.
+- Complexity: Academic English, structured logical flow, subject-specific terminology.
+- Math focus: Advanced algebra, formal geometry, statistics.
+- Science focus: Specialized Physics, Chemistry, Biology; link to global research.`;
+    } else {
+        return `### Tier: Senior Secondary / Pre-University (Grade 11-12)
+- Focus: Rigorous specialization, synthesis of complex theories, and final high-stakes examinations.
+- Examples: Industrial case studies, university-level theoretical frameworks, and competitive exam challenges.
+- Complexity: Professional academic English, rigorous logical derivations, precise technical nomenclature.
+- Math focus: Calculus, vectors, modeling complex systems.
+- Science focus: Experimental design, statistical analysis, advanced mechanisms.`;
     }
 };
 
@@ -69,16 +76,27 @@ async function generateAll() {
 
     for (const board of BOARDS) {
         for (const grade of GRADES) {
-            const id = `${board.toLowerCase().replace(/\s+/g, '-')}-${grade}`;
-            const gradeContext = getGradeContext(grade);
-            const boardContext = getBoardContext(board);
+            const boardSlug = board.toLowerCase().replace(/\s+/g, '-');
+            const id = `${boardSlug}-${grade}`;
 
-            let prompt = template;
-            prompt = prompt.replace(/{{SUBJECT}}/g, 'various subjects');
-            prompt = prompt.replace(/{{GRADE}}/g, grade);
-            prompt = prompt.replace(/{{GRADE_CONTEXT}}/g, gradeContext);
-            prompt = prompt.replace(/{{BOARD}}/g, board);
-            prompt = prompt.replace(/{{BOARD_CONTEXT}}/g, boardContext);
+            // Check for specific template
+            const specificTemplatePath = path.join(ROOT_DIR, 'templates', `${id}.md`);
+            let prompt = '';
+
+            if (fs.existsSync(specificTemplatePath)) {
+                console.log(`Using specific template for ${id}`);
+                prompt = fs.readFileSync(specificTemplatePath, 'utf8');
+            } else {
+                const gradeContext = getGradeContext(grade);
+                const boardContext = getBoardContext(board);
+
+                prompt = template;
+                prompt = prompt.replace(/{{SUBJECT}}/g, 'various subjects');
+                prompt = prompt.replace(/{{GRADE}}/g, grade);
+                prompt = prompt.replace(/{{GRADE_CONTEXT}}/g, gradeContext);
+                prompt = prompt.replace(/{{BOARD}}/g, board);
+                prompt = prompt.replace(/{{BOARD_CONTEXT}}/g, boardContext);
+            }
 
             await db.collection(PROMPTS_COLLECTION).doc(id).set({
                 id,

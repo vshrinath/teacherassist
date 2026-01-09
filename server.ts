@@ -79,13 +79,20 @@ const getGradeContext = (grade: string, subject: string) => {
 - Complexity: Intermediate English, compound sentences, standard terminology with explanations.
 - Math focus: Algebra, properties of shapes, basic statistics.
 - Science focus: Human systems, chemical changes, force and pressure.`;
-    } else {
+    } else if (gradeNum <= 10) {
         return `### Tier: Secondary (Grade 9-10)
-- Focus: Greater depth, critical thinking, and preparation for rigorous study.
-- Examples: Global issues, career paths, complex systems, and civic responsibility.
-- Complexity: Standard academic English, technical vocabulary, logical reasoning.
-- Math focus: Trigonometry, quadratic equations, theorems.
-- Science focus: Genetics, periodic table, laws of motion.`;
+- Focus: Critical thinking, analytical reasoning, and examination readiness.
+- Examples: National and global issues, career paths, and technical systems.
+- Complexity: Academic English, structured logical flow, subject-specific terminology.
+- Math focus: Advanced algebra, formal geometry, statistics.
+- Science focus: Specialized Physics, Chemistry, Biology; link to global research.`;
+    } else {
+        return `### Tier: Senior Secondary / Pre-University (Grade 11-12)
+- Focus: Rigorous specialization, synthesis of complex theories, and final high-stakes examinations.
+- Examples: Industrial case studies, university-level theoretical frameworks, and competitive exam challenges.
+- Complexity: Professional academic English, rigorous logical derivations, precise technical nomenclature.
+- Math focus: Calculus, vectors, modeling complex systems.
+- Science focus: Experimental design, statistical analysis, advanced mechanisms.`;
     }
 };
 
@@ -126,6 +133,13 @@ app.post('/api/generate-prompt', authMiddleware, async (req, res) => {
         }
 
         // Fallback to on-the-fly generation
+        const specificTemplatePath = path.join(__dirname, 'templates', `${id}.md`);
+        if (fs.existsSync(specificTemplatePath)) {
+            console.log(`Using specific template for ${id}`);
+            const specificPrompt = fs.readFileSync(specificTemplatePath, 'utf8');
+            return res.json({ prompt: specificPrompt });
+        }
+
         let template = fs.readFileSync(TEMPLATE_FILE, 'utf8');
         const gradeContext = getGradeContext(grade, subject);
         const boardContext = getBoardContext(board);
